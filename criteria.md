@@ -56,6 +56,7 @@ in at least 4 of 5 tries.
 ---
 
 ## 4. Something about your chunks
+Every chunk should be at least 200 characters. It should be clear and quick to the point when it answer the question. Then, it can expand on the details
 
 <!-- YOU WRITE THIS ONE.
 
@@ -72,12 +73,14 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+<!-- I want the explanation to be easy to understand and quick to the point -->
 
 
 ---
 
 ## 5. Your choice
+Every answer provides source attribution and directly names the document from which the answer comes from
+
 
 <!-- YOU WRITE THIS ONE TOO.
 
@@ -90,7 +93,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+<!-- I want the source to be identified, so they know it comes from the guide and AI is not just making it up. -->
 
 
 ---
