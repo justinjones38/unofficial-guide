@@ -56,7 +56,8 @@ in at least 4 of 5 tries.
 ---
 
 ## 4. Something about your chunks
-Every chunk should be at least 200 characters. It should be clear and quick to the point when it answer the question. Then, it can expand on the details
+No chunk ends mid-sentence, and no chunk is shorter than 150 characters. Each
+chunk should answer its question directly and then expand on the details.
 
 <!-- YOU WRITE THIS ONE.
 
@@ -73,7 +74,13 @@ Every chunk should be at least 200 characters. It should be clear and quick to t
 
 
 **Why this target:**
-<!-- I want the explanation to be easy to understand and quick to the point -->
+My 88 documents run from 178 to 549 characters, median 305, and each one is a
+single self-contained post answering a single question. Nothing needs splitting,
+so a chunk that ends mid-sentence means my chunker cut something it shouldn't
+have. The 150-character floor is below my shortest document but well above the
+~93-character paragraphs inside them, so it catches the failure I'd actually
+hit: splitting on paragraph breaks and producing bare title fragments like
+"On the printing quota" with no content attached.
 
 
 ---
