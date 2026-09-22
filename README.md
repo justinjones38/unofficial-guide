@@ -111,13 +111,23 @@ without reading what came before or after?
      visible. Milestone 4. -->
 
 **Question:**
-
+python app.py ask "How many hours a week does CS 340 take?"
+ 
 **Answer:**
 
 ```
+  (best distance 0.243, cutoff 0.7)
+
+CS 340 takes 6 hours a week early, and 15 hours a week in the last three weeks when the project lands (course_cs_340_workload.txt and course_cs_340.txt).
+
+Sources retrieved: course_cs_210_workload.txt, course_cs_340.txt, course_cs_340_workload.txt, course_phys_130_workload.txt, course_stat_150_workload.txt
+
+1 model calls this session, 631 tokens (578 in, 53 out)
+(.venv) 
 ```
 
 **My relevance cutoff:**
+The relevance cutoff is still 0.70 because the gate verification still held 5/5 answered and 5/5 refused.
 
 <!-- The number you set in config.py, and how you got there.
 
