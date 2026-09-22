@@ -56,6 +56,8 @@ in at least 4 of 5 tries.
 ---
 
 ## 4. Something about your chunks
+No chunk ends mid-sentence, and no chunk is shorter than 150 characters. Each
+chunk should answer its question directly and then expand on the details.
 
 <!-- YOU WRITE THIS ONE.
 
@@ -72,12 +74,20 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+My 88 documents run from 178 to 549 characters, median 305, and each one is a
+single self-contained post answering a single question. Nothing needs splitting,
+so a chunk that ends mid-sentence means my chunker cut something it shouldn't
+have. The 150-character floor is below my shortest document but well above the
+~93-character paragraphs inside them, so it catches the failure I'd actually
+hit: splitting on paragraph breaks and producing bare title fragments like
+"On the printing quota" with no content attached.
 
 
 ---
 
 ## 5. Your choice
+Every answer provides source attribution and directly names the document from which the answer comes from
+
 
 <!-- YOU WRITE THIS ONE TOO.
 
@@ -90,7 +100,7 @@ in at least 4 of 5 tries.
 
 
 **Why this target:**
-
+<!-- I want the source to be identified, so they know it comes from the guide and AI is not just making it up. -->
 
 
 ---
