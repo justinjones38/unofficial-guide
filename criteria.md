@@ -38,8 +38,7 @@ set the target at 4 of 5 to leave room for it to fail.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be?
+I want the source used to be stated, so the user know where the information comes from.
 
 ---
 

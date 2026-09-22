@@ -20,6 +20,7 @@
 # Unit 1
 
 ## What This Does
+This is a retrieval Q&A system that covers campus life at a fictional university. It answers all questions that helps student deal with dining halls, dorms, course workloads, and administrative deadlines. I picked the corpus because each response is a quick answer to a question. It lets me see the quality of retrivals without too much complexiness.
 
 <!-- Three or four sentences. Which corpus you picked, and the kinds of
      questions your system answers. Write it for someone who has never seen
@@ -29,9 +30,10 @@
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** 700 characters
+**Overlap:** 100 characters
 
+The document run between 178-549 characters, so there was no need for code splitting.
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
      reasonable" earns nothing. Point at something you noticed when you read
