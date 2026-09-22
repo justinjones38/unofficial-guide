@@ -48,10 +48,12 @@ TOP_K = 5               # how many chunks to pull back per question
 #
 # LOWER IS BETTER: 0.3 is a close match, 0.9 is unrelated.
 #
-# 0.6 is a reasonable starting point, not a right answer. Milestone 4 has you
-# measure your own two groups of distances and put the cutoff in the gap.
-# Most corpora land somewhere between 0.45 and 0.75.
-THRESHOLD = 0.6
+# Measured in Milestone 4. My five test questions land at 0.163, 0.243, 0.314,
+# 0.564 and 0.582; the five OUT_OF_SCOPE questions at 0.825, 0.844, 0.886,
+# 0.896 and 0.934. Nothing falls between 0.582 and 0.825, so the cutoff goes
+# in the middle of that empty band rather than at either edge — 0.6 would have
+# left only 0.018 of margin above my pass/fail question.
+THRESHOLD = 0.70
 
 
 # ─── Models ──────────────────────────────────────────────────────────────────
@@ -65,7 +67,14 @@ THRESHOLD = 0.6
 # stretch option — switches to loading that model from Hugging Face instead,
 # which needs `pip install 'sentence-transformers>=3.4,<3.5'` first. store.py
 # says so with a real error message rather than a stack trace if you forget.
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+# sentence-transformers is installed, so the second model is available. Switch
+# per run rather than editing this line, and keep the two indexes side by side:
+#     python app.py index                                    # MiniLM, 384-dim
+#     AI201_EMBEDDING_MODEL=all-mpnet-base-v2 \
+#         python app.py --variant mpnet index                # mpnet, 768-dim
+# Note --variant comes BEFORE the subcommand; it's a global flag.
+# Distances are cosine either way, so the two are directly comparable.
+EMBEDDING_MODEL = os.getenv("AI201_EMBEDDING_MODEL", "all-MiniLM-L6-v2")
 MODEL = os.getenv("AI201_MODEL", "gemini-3.5-flash-lite")
 
 

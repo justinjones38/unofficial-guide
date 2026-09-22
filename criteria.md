@@ -23,8 +23,13 @@ For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
+Four of my five questions are single-fact lookups whose keyword appears in only
+one document ("printing quota", "transcripts"), so I expect those to be easy.
+The fifth asks how many hours a week CS 340 takes, and my corpus has nine
+courses with near-identical workload files — same opening sentence, same
+structure, differing only in the course code and the numbers. That's the one
+question where retrieval has to discriminate rather than keyword-match, so I
+set the target at 4 of 5 to leave room for it to fail.
 
 ---
 
@@ -33,8 +38,8 @@ contains the answer.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
+Why all five and not four? What about your setup makes that achievable —
+     or what would have to go wrong for it not to be?
 
 ---
 
@@ -50,8 +55,16 @@ in at least 4 of 5 tries.
      just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
 
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
+The two groups separated cleanly. My five in-corpus questions came back at
+0.163, 0.243, 0.314, 0.564 and 0.582; the five out-of-scope ones at 0.825,
+0.844, 0.886, 0.896 and 0.934. Nothing lands in the 0.24-wide band between
+them, so I put THRESHOLD at 0.70, in the middle of the gap.
+
+With a gap that clean I could defend 5 of 5, but I'm keeping the target at
+4 of 5 for one reason: three of my five out-of-scope questions matched
+course_hist_118_exams.txt, my shortest document at 178 characters. Short
+chunks have less content to be dissimilar from, so they attract unrelated
+queries. If a refusal ever fails, I expect it to fail there.
 
 ---
 
@@ -100,7 +113,7 @@ Every answer provides source attribution and directly names the document from wh
 
 
 **Why this target:**
-<!-- I want the source to be identified, so they know it comes from the guide and AI is not just making it up. -->
+I want the source to be identified, so they know it comes from the guide and AI is not just making it up.
 
 
 ---
