@@ -140,7 +140,18 @@ The relevance cutoff is still 0.70 because the gate verification still held 5/5 
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| What is the printing quota per student  | yes | 0.314 |
+| How much do official transcripts cost | yes | 0.163 |
+| How does pass/fail option work | yes | 0.582 |
+| How many hours a week does CS 340 take? | yes | 0.243 |
+| How to register for classes | yes | 0.564 |
+| What is the capital of Mongolia? | no | 0.824 |
+| How do I change the oil in a diesel engine? | no | 0.934 |
+| Who won the 1994 World Cup? | no | 0.886 |
+| What is the recommended dosage of ibuprofen for a headache? | no | 0.844 |
+| How do I write a for loop in Rust? | no | 0.896 |
+
+
 
 ## How I Used AI
 
@@ -154,14 +165,16 @@ The relevance cutoff is still 0.70 because the gate verification still held 5/5 
      Milestone 5. -->
 
 **1.**
+I asked Claude for advice on running certain commands in the terminal. I was unsure of which commands to write, so I asked for advice and made adjustments based on the feedback
 
 **2.**
-
+I asked Claude to offer feedback on the relevance cutoff and it advised me to keep it relatively similar. 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
      claims earns nothing.
      ───────────────────────────────────────────────────────────────────────── -->
 
+Added a switching embedding model. However, it made the question groups worse than the original one.
 ---
 
 # Unit 2
