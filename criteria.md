@@ -38,7 +38,7 @@ set the target at 4 of 5 to leave room for it to fail.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-I want the source used to be stated, so the user know where the information comes from.
+I want the source used to be stated, so the user know where the information comes from. The files are close to the same, so the filename is the only thing that distinguish the courses
 
 ---
 
