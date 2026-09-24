@@ -200,17 +200,20 @@ Added a switching embedding model. However, it made the question groups worse th
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
 | 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
-| 2. Every answer names a source | 5 of 5 | 5/5  | 4/5  | 5/5 | MISSED |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
 | 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
-| 4. | No chunk ends mid-sentence| 0 violations |
-| 5. | Answer names the correct source document | 5 of 5 |
+| 4. No chunk ends mid-sentence or runs under 150 chars | 0 violations | 0 | 0 | 0 | MET |
+| 5. Answer names the correct source document | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
 
 <!-- Underneath, paste the REAL output for each criterion from one of your
      runs — the actual text your system produced, not a description of it.
      Name the file and function that produced it. -->
+**Criteria 1 and 3** — produced by `run_eval.py::main`, which scores each run
+with `scorer.py::judge`. Retrieval and the gate are deterministic, so the
+distances are identical across the three runs; only the model call varies.
+
 ```bash
-file: scorer.py
-func: judge_retrieval()
+$ python run_eval.py --label before
 
 What is the printing quota per student
   run 1: pass  (best distance 0.314)
@@ -249,6 +252,65 @@ Wrote results\run_2026-09-23_1937.md
 
 ```
 
+**Criterion 1, measured properly** — the column above is `judge`, which checks
+the ANSWER. Criterion 1 is about retrieval, so it needs `scorer.py::judge_retrieval`,
+which runs the same substring test against the retrieved chunks instead:
+
+```bash
+$ python scorer.py
+
+Retrieved chunks contain the expected phrase:
+  PASS  What is the printing quota per student
+        expected '$30 of printing'
+  PASS  How much do official transcripts cost
+        expected '$8'
+  PASS  How does pass/fail option work
+        expected 'your major'
+  PASS  How many hours a week does CS 340 take?
+        expected '6 hours'
+  PASS  How to register for classes
+        expected 'adviser hold'
+
+  5 of 5 passed
+```
+
+**Criteria 2 and 5** — the answers themselves, from the "Real output" section of
+`results/run_2026-09-23_1937.md`. Every one names a source, and the source named
+is the document the fact came from:
+
+```
+Every student gets $30 of printing per semester, which is roughly 600
+black-and-white pages (admin_printing_quota.txt).
+
+Official transcripts cost $8.
+
+Source: admin_transcript_requests.txt
+
+Any course outside your major can be taken pass/fail, and you can declare it as
+late as week eight after seeing your midterm. A pass requires a C- or better,
+with a maximum of two per year and eight across a degree
+(*admin_pass_fail_option.txt*).
+
+CS 340 takes 6 hours a week early, and 15 hours a week in the last three weeks
+when the project lands.
+
+Sources: `course_cs_340_workload.txt` and `course_cs_340.txt`
+
+To register for classes, you must first have your adviser hold lifted, and you
+should book your adviser two weeks out because they get busy. Registration times
+are then staggered by credit hours. (Source: `advising_registration.txt`)
+```
+
+**Criterion 4** — measured over every chunk the indexer produces, via
+`ingest.py::load_documents` and `chunker.py::split_documents`:
+
+```
+documents: 88
+chunks:    88
+shorter than 150 chars: 0
+ending mid-sentence:    0
+chunk length min/median/max: 178 / 309 / 549
+```
 
 ## Verdicts
 
@@ -263,11 +325,11 @@ Wrote results\run_2026-09-23_1937.md
 
 | # | Criterion | Verdict | How I decided |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+| 1 | Retrieved chunk contains the answer | MET | `judge_retrieval` found the expected phrase in the retrieved chunks for all 5 questions. Retrieval is deterministic, so this is the same on every run. Not close: the target was 4 of 5 and the weakest match was "how does pass/fail work" at distance 0.582, still well inside the 0.70 cutoff. |
+| 2 | Every answer names a source | MET | Read all 15 answers in the "Real output" section of the run log and counted the ones naming a filename: 15 of 15, so 5/5 on each run. The target was 5 of 5 with no margin, so I checked each run separately rather than sampling. |
+| 3 | Gate stops out-of-corpus questions | MET | `check_out_of_scope` refused 5 of 5. Closest out-of-scope question was 0.825 against a 0.70 cutoff, so nothing was near the line. |
+| 4 | No chunk ends mid-sentence or runs under 150 chars | MET | Counted across all 88 chunks, not per run — chunking doesn't change between runs. 0 chunks under 150 characters (shortest was 178) and 0 ending on anything other than terminal punctuation. |
+| 5 | Answer names the correct source document | MET | Stricter than criterion 2: I checked the named file actually contains the fact, not just that a filename appeared. All 15 correct. The one at risk was CS 340, where nine near-identical workload files could be confused — it cited `course_cs_340_workload.txt`, the right one, on all three runs. |
 
 ## Diagnoses
 
