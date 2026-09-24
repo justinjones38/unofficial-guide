@@ -199,15 +199,56 @@ Added a switching embedding model. However, it made the question groups worse th
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5  | 4/5  | 5/5 | MISSED |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. | No chunk ends mid-sentence| 0 violations |
+| 5. | Answer names the correct source document | 5 of 5 |
 
 <!-- Underneath, paste the REAL output for each criterion from one of your
      runs — the actual text your system produced, not a description of it.
      Name the file and function that produced it. -->
+```bash
+file: scorer.py
+func: judge_retrieval()
+
+What is the printing quota per student
+  run 1: pass  (best distance 0.314)
+  run 2: pass  (best distance 0.314)
+  run 3: pass  (best distance 0.314)
+
+How much do official transcripts cost
+  run 1: pass  (best distance 0.163)
+  run 2: pass  (best distance 0.163)
+  run 3: pass  (best distance 0.163)
+
+How does pass/fail option work
+  run 1: pass  (best distance 0.582)
+  run 2: pass  (best distance 0.582)
+  run 3: pass  (best distance 0.582)
+
+How many hours a week does CS 340 take?
+  run 1: pass  (best distance 0.243)
+  run 2: pass  (best distance 0.243)
+  run 3: pass  (best distance 0.243)
+
+How to register for classes
+  run 1: pass  (best distance 0.564)
+  run 2: pass  (best distance 0.564)
+  run 3: pass  (best distance 0.564)
+
+Out-of-scope questions (the gate should refuse these):
+  refused  (best distance 0.825)  What is the capital of Mongolia?
+  refused  (best distance 0.934)  How do I change the oil in a diesel engine?
+  refused  (best distance 0.886)  Who won the 1994 World Cup?
+  refused  (best distance 0.844)  What is the recommended dosage of ibuprofen for a headache?
+  refused  (best distance 0.896)  How do I write a for loop in Rust?
+  -> gate refused 5 of 5
+
+Wrote results\run_2026-09-23_1937.md
+
+```
+
 
 ## Verdicts
 
