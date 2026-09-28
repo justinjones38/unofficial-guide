@@ -351,11 +351,15 @@ chunk length min/median/max: 178 / 309 / 549
 
      Milestone 3. -->
 
+Nothing missed - all 5 criteria reached their target on all 3 runs. So, in my opinion, the targets set was weaker.
+
 ## The Improvement
 
 **What I changed:**
+I changed the CHUNK_SIZE from 700 to 300 and CHUNK_OVERLAP from 100 to 50
 
 **Why I picked it:**
+Lowering the chunk size below the document lengths helped make the chunking actually do something for criterion 4 to measure.
 
 <!-- Connect it to a specific diagnosis above in one sentence. If you can't,
      you picked a fix because it sounded impressive. -->
