@@ -35,8 +35,15 @@ CORPUS = os.getenv("AI201_CORPUS", "campus_life")
 # (600) that has to clear the longest document, not CHUNK_SIZE itself. At
 # 600/100 the step is 500 and the two documents over 500 characters each shed
 # a 16-49 character tail fragment.
-CHUNK_SIZE = 700        # characters per chunk
-CHUNK_OVERLAP = 100     # characters shared between neighbouring chunks
+#
+# Unit 2: lowered from 700/100 to 300/50. At 700 the chunker was a pass-through
+# — 88 documents in, 88 chunks out — so criterion 4 ("no chunk ends mid-sentence
+# or runs under 150 chars") passed by construction and could not fail. The step
+# is now 250, below the median document (305) and well below the longest (549),
+# so most documents split into 2-3 chunks and the criterion has something to
+# measure.
+CHUNK_SIZE = 300        # characters per chunk
+CHUNK_OVERLAP = 50      # characters shared between neighbouring chunks
 
 
 # ─── Retrieval (Milestone 4) ─────────────────────────────────────────────────
