@@ -170,7 +170,13 @@ The relevance cutoff is still 0.70 because the gate verification still held 5/5 
 I asked Claude for advice on running certain commands in the terminal. I was unsure of which commands to write, so I asked for advice and made adjustments based on the feedback
 
 **2.**
-I asked Claude to offer feedback on the relevance cutoff and it advised me to keep it relatively similar. 
+I asked Claude to offer feedback on the relevance cutoff and it advised me to keep it relatively similar.
+**3.**
+I asked Claude to help determine a good chunking value to reduce to
+**4.** 
+I asked AI to help determine what was causing Criterion 4 to fail after I adjusted the chunk size.
+
+<!--  -->
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
      claims earns nothing.
@@ -351,7 +357,21 @@ chunk length min/median/max: 178 / 309 / 549
 
      Milestone 3. -->
 
-Nothing missed - all 5 criteria reached their target on all 3 runs. So, in my opinion, the targets set was weaker.
+Nothing missed — all 5 criteria hit their target on all 3 runs. That is a
+result about my targets, not about my pipeline, and two of them were set too
+low to tell me anything.
+
+Criterion 1 is the one I would tighten, from 4 of 5 to 5 of 5. Retrieval is
+deterministic, so the same questions either land or they don't — there is no
+run-to-run variation for the spare failure to absorb. A target of 4 of 5 just
+means one question is allowed to fail forever without me noticing.
+
+Criterion 4 is worse, because it could not fail at all. It measures chunks, and
+at CHUNK_SIZE 700 the chunker cut nothing: 88 documents in, 88 chunks out. Every
+"chunk" was a whole document that already ended in a period and already cleared
+150 characters, so "no chunk ends mid-sentence or runs under 150 chars" passed
+by construction. The 0 violations was not evidence my chunking was good; it was
+evidence my chunking never ran.
 
 ## The Improvement
 
@@ -371,11 +391,12 @@ Lowering the chunk size below the document lengths helped make the chunking actu
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5 of 5 | 5 of 5 |  5 of 5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5 of 5 | 5 of 5 |  5 of 5 | MET  |
+| 4. No chunk ends mid-sentence or runs under 150 chars | 0 violations | 104 | 104 | 104 | MISSED |
+| 5. Answer names the correct source document | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+
 
 **Did it help?**
 
@@ -385,6 +406,8 @@ Lowering the chunk size below the document lengths helped make the chunking actu
      tell.
 
      Milestone 4. -->
+  
+Changing the chunk size made criterion 4 an actual test instead of just passing. As explained in the "What's Still Broken" section, it exposed errors with the that some chunks do end mid-sentence or do not have 150 chars.
 
 ## What's Still Broken
 
@@ -396,9 +419,13 @@ Lowering the chunk size below the document lengths helped make the chunking actu
 
      Milestone 5. -->
 
+Changing the chunk size exposed an error with chunks ending mid-sentence and being less 150 characters. It led to 104 violations which is caused because split_document calls the blind character-window splitter, which cuts at character regardless of where sentence ends. Shrinking the chunk size cause the splitter to actually run for the first time. I ran out of time, so I did not make further changes
+
 ## What I'd Do Differently
 
 <!-- Knowing what you know now — which of your five criteria would you write
      differently, and why?
 
      Milestone 5. -->
+
+For Criterion 4, it only test for a property of chunks, but it never check that chunking happened. So, I would have added a condition that the chunker had to produce more chunks than docuements. This would failed the first run before I reduced the chunks. 
